@@ -31,12 +31,27 @@ export const Route = createFileRoute("/invitation/$slug")({
 
 function InvitationPage() {
   const { guest, message } = Route.useLoaderData();
+  if (!guest) return null;
+  if (!message) return null;
+
   const rsvpFn = useServerFn(submitRsvp);
+
   const [status, setStatus] = useState<string>(guest!.status);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const personalized = message.replace("[nom]", guest!.name);
+
+
+
+  const personalized = message
+    .replaceAll("[nom]", guest!.name)
+    .replaceAll("[Nom]", guest!.name);
+
+
+
+
+
+
 
   async function respond(s: "Accepté" | "Décliné") { 
     setBusy(true);
