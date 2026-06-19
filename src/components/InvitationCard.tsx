@@ -45,9 +45,10 @@ export function InvitationCard({
 
         <div className="mt-10 space-y-1 text-center">
           <p className="font-display text-2xl font-bold text-ink">Vendredi 26/06/2026</p>
-          <p className="font-display text-xl text-ink">ISC - GOMA à partir de 08H00</p>
+          <p className="font-display text-xl text-ink">Lieu : Chez les Banquiers</p>
+          <p className="font-display text-xl text-ink">Heure : 16h00</p>
           <p className="text-xs text-muted-foreground">
-            La suite du programme vous sera communiqué après la soutenance
+            La suite du programme vous sera communiquée après la soutenance
           </p>
         </div>
 
