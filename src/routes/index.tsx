@@ -133,7 +133,7 @@ function AdminPage() {
                 </tr>
               </thead>
               <tbody>
-                {initial.guests.map((g) => (
+                {initial.guests.map((g: typeof initial.guests[number]) => (
                   <tr key={g.slug} className="border-b border-border/60">
                     <td className="py-3 pr-4 font-medium">{g.name}</td>
                     <td className="py-3 pr-4">
