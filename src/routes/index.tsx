@@ -17,8 +17,69 @@ export const Route = createFileRoute("/")({
     ],
   }),
   loader: () => getInviteData(),
-  component: AdminPage,
+  component: ProtectedAdminPage,
 });
+
+const ADMIN_PASSWORD = "keza2026";
+const STORAGE_KEY = "admin_auth_ok";
+
+function ProtectedAdminPage() {
+  const [authed, setAuthed] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return window.sessionStorage.getItem(STORAGE_KEY) === "1";
+  });
+  const [pwd, setPwd] = useState("");
+  const [error, setError] = useState<string | null>(null);
+
+  if (!authed) {
+    return (
+      <main className="flex min-h-screen items-center justify-center px-4">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (pwd === ADMIN_PASSWORD) {
+              window.sessionStorage.setItem(STORAGE_KEY, "1");
+              setAuthed(true);
+            } else {
+              setError("Mot de passe incorrect");
+            }
+          }}
+          className="w-full max-w-sm rounded-lg bg-card p-6 shadow ring-1 ring-border"
+        >
+          <p className="font-script text-3xl text-gold text-center">Accès privé</p>
+          <h1 className="mt-1 text-center font-display text-2xl font-bold">
+            Tableau de bord
+          </h1>
+          <p className="mt-2 text-center text-sm text-muted-foreground">
+            Veuillez saisir le mot de passe pour continuer.
+          </p>
+          <input
+            type="password"
+            value={pwd}
+            onChange={(e) => {
+              setPwd(e.target.value);
+              setError(null);
+            }}
+            placeholder="Mot de passe"
+            className="mt-4 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+            autoFocus
+          />
+          {error && (
+            <p className="mt-2 text-sm text-destructive">{error}</p>
+          )}
+          <button
+            type="submit"
+            className="mt-4 w-full rounded-md bg-ink px-4 py-2 text-sm font-medium text-paper hover:opacity-90"
+          >
+            Entrer
+          </button>
+        </form>
+      </main>
+    );
+  }
+
+  return <AdminPage />;
+}
 
 function AdminPage() {
   const initial = Route.useLoaderData();
