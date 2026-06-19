@@ -12,4 +12,9 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  server: {
+    // Render requires this for host header validation.
+    // Allow your Render hostname.
+    allowedHosts: ["fiesta-vite.onrender.com"],
+  },
 });
