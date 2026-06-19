@@ -134,9 +134,9 @@ async function readAll(): Promise<{ guests: Guest[]; message: string }> {
       }
       const csvText = await res.text();
       const rows = parseCsv(csvText);
-      
+
       message = rows[0]?.[5] ?? "";
-      
+
       for (let i = 1; i < rows.length; i++) {
         const r = rows[i];
         const name = (r[0] ?? "").trim();
@@ -169,7 +169,8 @@ async function readAll(): Promise<{ guests: Guest[]; message: string }> {
       }
     }
     if (db.addedGuests) {
-      let nextRowIndex = guests.length > 0 ? Math.max(...guests.map(g => g.rowIndex)) + 1 : 2;
+      let nextRowIndex =
+        guests.length > 0 ? Math.max(...guests.map((g) => g.rowIndex)) + 1 : 2;
       for (const added of db.addedGuests) {
         guests.push({
           rowIndex: nextRowIndex++,
@@ -220,15 +221,53 @@ export const updateMessage = createServerFn({ method: "POST" })
   .validator((d: { message: string }) => d)
   .handler(async ({ data }) => {
     if (hasCredentials()) {
-      await gw(
-        `/spreadsheets/${SPREADSHEET_ID}/values/Sheet1!F1?valueInputOption=RAW`,
-        { method: "PUT", body: JSON.stringify({ values: [[data.message]] }) },
-      );
+      await gw(`/spreadsheets/${SPREADSHEET_ID}/values/Sheet1!F1?valueInputOption=RAW`, {
+        method: "PUT",
+        body: JSON.stringify({ values: [[data.message]] }),
+      });
     } else {
       const db = readLocalDb();
       db.message = data.message;
       writeLocalDb(db);
     }
+    return { ok: true };
+  });
+
+export const deleteGuest = createServerFn({ method: "POST" })
+  .validator((d: { slug: string }) => d)
+  .handler(async ({ data }) => {
+    const { guests } = await readAll();
+    const guest = guests.find((g) => g.slug === data.slug);
+    if (!guest) throw new Error("Invité introuvable");
+
+    if (hasCredentials()) {
+      // Clear the row values (safer than deleting rows, avoids shifting indexes)
+      await gw(
+        `/spreadsheets/${SPREADSHEET_ID}/values/Sheet1!A${guest.rowIndex}:C${guest.rowIndex}?valueInputOption=RAW`,
+        {
+          method: "PUT",
+          body: JSON.stringify({ values: [["", "", ""]] }),
+        },
+      );
+    } else {
+      const db = readLocalDb();
+
+      // Prefer removing from addedGuests first (those are created when credentials are absent)
+      if (db.addedGuests) {
+        const addedIdx = db.addedGuests.findIndex((g) => slugify(g.name) === data.slug);
+        if (addedIdx !== -1) {
+          db.addedGuests.splice(addedIdx, 1);
+        }
+      }
+
+      // Also remove any guest override for that rowIndex (RSVP status)
+      if (db.guests) {
+        db.guests = db.guests.filter((g) => g.rowIndex !== guest.rowIndex);
+      }
+
+      writeLocalDb(db);
+    }
+
     return { ok: true };
   });
 
@@ -265,3 +304,4 @@ export const submitRsvp = createServerFn({ method: "POST" })
     }
     return { ok: true, status: data.status, timestamp: ts };
   });
+

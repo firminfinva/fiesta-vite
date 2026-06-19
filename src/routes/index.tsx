@@ -5,6 +5,7 @@ import {
   getInviteData,
   addGuest,
   updateMessage,
+  deleteGuest,
 } from "@/lib/sheets.functions";
 import { InvitationCard } from "@/components/InvitationCard";
 
@@ -24,6 +25,8 @@ function AdminPage() {
   const router = useRouter();
   const addFn = useServerFn(addGuest);
   const saveMsgFn = useServerFn(updateMessage);
+  const delFn = useServerFn(deleteGuest);
+
 
   const [message, setMessage] = useState(initial.message);
   const [newName, setNewName] = useState("");
@@ -62,6 +65,17 @@ function AdminPage() {
     setCopied(slug);
     setTimeout(() => setCopied(null), 1500);
   }
+
+  async function handleDelete(slug: string) {
+    setBusy(true);
+    try {
+      await delFn({ data: { slug } });
+      await router.invalidate();
+    } finally {
+      setBusy(false);
+    }
+  }
+
 
   return (
     <main className="min-h-screen px-4 py-10 sm:py-16">
@@ -130,6 +144,7 @@ function AdminPage() {
                   <th className="py-2 pr-4">Statut</th>
                   <th className="py-2 pr-4">Horodatage</th>
                   <th className="py-2 pr-4">Lien</th>
+                  <th className="py-2 pr-4">Supprimer</th>
                 </tr>
               </thead>
               <tbody>
@@ -150,11 +165,20 @@ function AdminPage() {
                         {copied === g.slug ? "Copié ✓" : "Copier le lien"}
                       </button>
                     </td>
+                    <td className="py-3 pr-4">
+                      <button
+                        onClick={() => handleDelete(g.slug)}
+                        disabled={busy}
+                        className="rounded-md border border-destructive/40 px-3 py-1 text-xs text-destructive hover:bg-destructive/10 disabled:opacity-50"
+                      >
+                        Supprimer
+                      </button>
+                    </td>
                   </tr>
                 ))}
                 {initial.guests.length === 0 && (
                   <tr>
-                    <td colSpan={4} className="py-6 text-center text-muted-foreground">
+                    <td colSpan={5} className="py-6 text-center text-muted-foreground">
                       Aucun invité pour le moment.
                     </td>
                   </tr>
@@ -166,10 +190,7 @@ function AdminPage() {
 
         <section>
           <h2 className="mb-4 text-center font-display text-2xl font-bold">Aperçu</h2>
-          <InvitationCard
-            recipientName="Prénom de l'invité"
-            message={message.replace("[Nom]", "Prénom de l'invité")}
-          />
+          <InvitationCard message={message.replace("[nom]", "Prénom de l'invité")} />
         </section>
       </div>
     </main>

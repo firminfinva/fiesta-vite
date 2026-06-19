@@ -36,9 +36,9 @@ function InvitationPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const personalized = message.replace("[Nom]", guest!.name);
+  const personalized = message.replace("[nom]", guest!.name);
 
-  async function respond(s: "Accepté" | "Décliné") {
+  async function respond(s: "Accepté" | "Décliné") { 
     setBusy(true);
     setError(null);
     try {
@@ -53,7 +53,8 @@ function InvitationPage() {
 
   return (
     <main className="min-h-screen px-4 py-10 sm:py-16">
-      <InvitationCard recipientName={guest!.name} message={personalized}>
+      <InvitationCard message={personalized}>
+
         <div className="mt-10">
           {status === "Accepté" || status === "Décliné" ? (
             <div className="rounded-md bg-muted p-4 text-center">

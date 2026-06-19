@@ -1,0 +1,5 @@
+- [ ] Update InvitationCard: hardcode "De la part de" name to "Keza rachel" (do not depend on recipientName)
+- [ ] Update invitation.$slug page: replace only message token using [nom] (stop using recipientName prop)
+- [ ] Add delete button per guest row in admin dashboard (routes/index.tsx)
+- [ ] Implement deleteGuest server function in lib/sheets.functions.ts
+- [ ] Quick run/build check: ensure invitation rendering and delete flow work

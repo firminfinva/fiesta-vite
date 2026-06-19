@@ -1,16 +1,15 @@
 import type { ReactNode } from "react";
 
 export function InvitationCard({
-  recipientName,
   message,
   children,
 }: {
-  recipientName?: string;
   message?: string;
   children?: ReactNode;
 }) {
   return (
     <div className="relative mx-auto w-full max-w-2xl overflow-hidden rounded-lg bg-card shadow-2xl ring-1 ring-border">
+
       {/* Bunting */}
       <div className="pointer-events-none absolute inset-x-0 top-0 flex justify-between px-4 pt-3 text-gold opacity-80">
         <Bunting />
@@ -29,9 +28,7 @@ export function InvitationCard({
 
         <div className="mt-10 text-center">
           <p className="font-display text-xl text-ink">De la part de</p>
-          {recipientName && (
-            <p className="mt-2 font-script text-5xl text-gold">{recipientName}</p>
-          )}
+          <p className="mt-2 font-script text-5xl text-gold">Keza rachel</p>
         </div>
 
         <div className="my-8 flex items-center justify-center gap-2 text-gold">
