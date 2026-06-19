@@ -14,7 +14,7 @@ export default defineConfig({
   },
   server: {
     // Render requires this for host header validation.
-    // Allow your Render hostname.
-    allowedHosts: ["fiesta-vite.onrender.com"],
+    // Allow your Render hostname. If you still see it blocked, switch to allowing all.
+    allowedHosts: ["fiesta-vite.onrender.com", "localhost", "127.0.0.1"],
   },
 });
