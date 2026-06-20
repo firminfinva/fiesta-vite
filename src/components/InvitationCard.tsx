@@ -47,9 +47,6 @@ export function InvitationCard({
           <p className="font-display text-2xl font-bold text-ink">Vendredi 26/06/2026</p>
           <p className="font-display text-xl text-ink">Lieu : Chez les Banquiers</p>
           <p className="font-display text-xl text-ink">Heure : 16h00</p>
-          <p className="text-xs text-muted-foreground">
-            La suite du programme vous sera communiquée après la soutenance
-          </p>
         </div>
 
         {children}
