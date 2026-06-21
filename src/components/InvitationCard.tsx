@@ -48,7 +48,7 @@ export function InvitationCard({
         </div>
 
         <div className="mt-6 space-y-1 text-center">
-          <p className="font-display text-lg font-semibold text-ink">Première partie</p>
+          <p className="font-display text-lg font-semibold text-ink">Soutenance</p>
           <p className="font-display text-xl text-ink">Lieu : ISC Goma</p>
           <p className="font-display text-xl text-ink">Heure : 8h00</p>
         </div>
@@ -60,7 +60,7 @@ export function InvitationCard({
         </div>
 
         <div className="space-y-1 text-center">
-          <p className="font-display text-lg font-semibold text-ink">Deuxième partie</p>
+          <p className="font-display text-lg font-semibold text-ink">Partage d'un verre</p>
           <p className="font-display text-xl text-ink">Lieu : Chez les Banquiers</p>
           <p className="font-display text-xl text-ink">Heure : 16h00</p>
         </div>
