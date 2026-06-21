@@ -45,6 +45,22 @@ export function InvitationCard({
 
         <div className="mt-10 space-y-1 text-center">
           <p className="font-display text-2xl font-bold text-ink">Vendredi 26/06/2026</p>
+        </div>
+
+        <div className="mt-6 space-y-1 text-center">
+          <p className="font-display text-lg font-semibold text-ink">Première partie</p>
+          <p className="font-display text-xl text-ink">Lieu : ISC Goma</p>
+          <p className="font-display text-xl text-ink">Heure : 8h00</p>
+        </div>
+
+        <div className="my-8 flex items-center justify-center gap-2 text-gold">
+          <span className="h-px w-8 bg-gold/50" />
+          <span>✦</span>
+          <span className="h-px w-8 bg-gold/50" />
+        </div>
+
+        <div className="space-y-1 text-center">
+          <p className="font-display text-lg font-semibold text-ink">Deuxième partie</p>
           <p className="font-display text-xl text-ink">Lieu : Chez les Banquiers</p>
           <p className="font-display text-xl text-ink">Heure : 16h00</p>
         </div>
